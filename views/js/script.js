@@ -24,11 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const tanggal2 = today.toLocaleDateString('id-ID', options);
     const jam2 = today.toLocaleTimeString('id-ID');
 
-    const assistantPrompt = {
-        role: "assistant",
-        content: `Halo, Nama saya *ZheeRexx*, asisten virtual yang dibuat oleh *RizzPiw*. Saya siap membantu Anda ... Hari ini adalah ${hari}, tanggal ${tanggal2}, dan saat ini jam ${jam2}. Mari kita mulai petualangan pengetahuan kita!`
-    };
-
     inputText.addEventListener('input', function () {
         inputText.style.height = 'auto';
         const newHeight = Math.min(inputText.scrollHeight, maxTextareaHeight);
@@ -151,8 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } */
 
         const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${question}&apikey=ZheeRexx`)
-
-        let blackboxData = response.result;
+        let blackboxData = response.data.result;
         displayAnswer(blackboxData, userTime);
         messageHistory.push({ role: "assistant", content: blackboxData });
 
