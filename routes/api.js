@@ -65,8 +65,8 @@ res.json(`${error.message}`);
 let messageHistory = [];
 
 router.get("/ai", async (req, res) => {
-const { apikey, query } = req.body;
-
+var apikey = req.query.apikey;
+var query = req.query.query;
 if (!apikey) return res.json(loghandler.noapikey);
 if (!query) return res.json({
 status: false,
