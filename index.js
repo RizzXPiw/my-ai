@@ -21,7 +21,7 @@ app.use('/css', express.static(path.join(__dirname, 'views/css')));
 app.use('/js', express.static(path.join(__dirname, 'views/js')));
 
 // Serve index.html at /chat
-app.get("/chat", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
