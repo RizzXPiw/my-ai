@@ -142,14 +142,19 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
         const encodedQuestion = encodeURIComponent(question);
         const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${encodedQuestion}&apikey=ZheeRexx`);
-        let blackboxData = response.data.result;
-        displayAnswer(blackboxData, userTime);
-        messageHistory.push({ role: "assistant", content: blackboxData });
+        
+        if (response.status === true) {
+            const blackboxData = response.data.result;  // Mengambil hasil dari respons
+            displayAnswer(blackboxData, userTime);      // Menampilkan jawaban
+            messageHistory.push({ role: "assistant", content: blackboxData }); // Menyimpan histori
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
     } catch (error) {
-        console.error('Error:', error);
-        displayAnswer(`Maaf, terjadi kesalahan dalam mengambil jawaban. ${error.message}`, userTime);
+        console.error('Error:', error.response ? error.response.data : error.message);
+        displayAnswer(`Maaf, terjadi kesalahan: ${error.response ? error.response.data : error.message}`, userTime);
     }
-}
+  }
 
     function displayAnswer(answer, answerTime) {
         const loader = document.getElementById('loader');
