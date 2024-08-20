@@ -140,8 +140,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function sendMessage(question, userTime) {
     try {
-        const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${question}&apikey=ZheeRexx`)
-        let blackboxData = await response.data.result
+        const encodedQuestion = encodeURIComponent(question);
+        const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${encodedQuestion}&apikey=ZheeRexx`);
+        let blackboxData = response.data.result;
         displayAnswer(blackboxData, userTime);
         messageHistory.push({ role: "assistant", content: blackboxData });
     } catch (error) {
