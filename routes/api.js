@@ -146,4 +146,78 @@ res.json(loghandler.apikey);
 }
 });
 
+router.post("/ai2", async (req, res) => {
+const { apikey, query } = req.body;
+
+if (!apikey) return res.json(loghandler.noapikey);
+if (!query) return res.json({
+status: false,
+creator: `${global.creator}`,
+message: "Masukkan Teks Nya",
+});
+
+if (listkey.includes(apikey)) {
+try {
+// Initialize assistant prompt if message history is empty
+if (messageHistory.length === 0 || messageHistory[0].role !== "assistant") {
+const today = new Date();
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+const hari = today.toLocaleDateString('id-ID', { weekday: 'long' });
+const tanggal = today.toLocaleDateString('id-ID', options);
+const jam = today.toLocaleTimeString('id-ID');
+
+const assistantPrompt = {
+role: "assistant",
+content: `Halo, Nama saya *ZheeRexx*, asisten virtual yang dibuat oleh *RizzPiw*. Saya siap membantu Anda dengan berbagai kebutuhan, mulai dari menyelesaikan tugas, membuat kode pemrograman, hingga menjawab pertanyaan-pertanyaan kompleks. Saya dapat mencari informasi dari berbagai sumber terpercaya seperti https://google.com, openai.com, serta platform media sosial seperti Instagram, Facebook, Twitter, dan YouTube, sehingga Anda selalu mendapatkan jawaban yang paling akurat dan terkini.
+
+Apapun bahasa yang Anda gunakan untuk bertanya, saya akan menjawab dengan bahasa yang sama. Jadi, jika Anda bertanya dalam bahasa Indonesia, saya akan menjawab dalam bahasa Indonesia, dan begitu juga dengan bahasa lainnya. Saya di sini untuk membuat hidup Anda lebih mudah dan membantu Anda menjadi lebih pintar setiap harinya. 
+
+Hari ini adalah ${hari}, tanggal ${tanggal}, dan saat ini jam ${jam}. Mari kita mulai petualangan pengetahuan kita!`
+};
+messageHistory.unshift(assistantPrompt);
+}
+messageHistory.push({ role: "user", content: query });
+const headers = {
+"Accept": "*/*",
+"Accept-Language": "id-ID,en;q=0.5",
+"Referer": "https://www.blackbox.ai/",
+"Content-Type": "application/json",
+"Origin": "https://www.blackbox.ai",
+"Alt-Used": "www.blackbox.ai"
+};
+
+const data = {
+messages: [{ role: 'user', content: query }],
+userId: "97944128-08d4-4d43-884b-7ea4e5d52b40",
+userSystemPrompt: messageHistory,
+maxTokens: 1024,
+codeModelMode: true,
+webSearchMode: false,
+isMicMode: false
+};
+const blackboxResponse = await axios.post('https://www.blackbox.ai/api/chat', data, { headers });
+
+if (blackboxResponse.status !== 200) {
+throw new Error('Response was not ok');
+}
+
+let blackboxData = blackboxResponse.data.result;
+blackboxData = blackboxData.replace(/\$\@.*?\$\@|\*\*|\$/g, '');
+
+messageHistory.push({ role: "assistant", content: blackboxData });
+
+res.json({
+status: true,
+creator: `${global.creator}`,
+result: blackboxData,
+});
+} catch (e) {
+console.error('Error:', e);
+res.json({ status: false, message: e.message });
+}
+} else {
+res.json(loghandler.apikey);
+}
+});
+
 module.exports = router;
