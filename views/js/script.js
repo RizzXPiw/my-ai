@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const today = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const hari = today.toLocaleDateString('id-ID', { weekday: 'long' });
-    const tanggal2 = today.toLocaleDateString('id-ID', options);
-    const jam2 = today.toLocaleTimeString('id-ID');
+    const tanggal = today.toLocaleDateString('id-ID', options);
+    const jam = today.toLocaleTimeString('id-ID');
 
     inputText.addEventListener('input', function () {
         inputText.style.height = 'auto';
@@ -140,16 +140,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function sendMessage(question, userTime) {
     try {
-        /* const data = {
-            query: question,
-            apikey: 'ZheeRexx'
-        } */
-
         const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${question}&apikey=ZheeRexx`)
-        let blackboxData = response.data.result;
+        let blackboxData = await response.data.result
         displayAnswer(blackboxData, userTime);
         messageHistory.push({ role: "assistant", content: blackboxData });
-
     } catch (error) {
         console.error('Error:', error);
         displayAnswer(`Maaf, terjadi kesalahan dalam mengambil jawaban. ${error.message}`, userTime);
