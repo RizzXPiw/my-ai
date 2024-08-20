@@ -4,6 +4,7 @@ require("../settings.js");
 var express = require("express");
 var axios = require("axios");
 var qs = require("qs");
+const os = require('os');
 var fetch = require("node-fetch");
 var cheerio = require("cheerio");
 var request = require("request");
@@ -61,7 +62,7 @@ res.json(`${error.message}`);
 //========================================\\
 // Di Sini Ai Nya
 
-router.post("/ai", async (req, res) => {
+router.get("/ai", async (req, res) => {
 const { apikey, query } = req.body;
 
 if (!apikey) return res.json(loghandler.noapikey);
