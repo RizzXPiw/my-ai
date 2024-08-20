@@ -146,7 +146,7 @@ res.json(loghandler.apikey);
 }
 });
 
-router.post("/ai2", async (req, res) => {
+router.get("/ai2", async (req, res) => {
 const { apikey, query } = req.body;
 
 if (!apikey) return res.json(loghandler.noapikey);
