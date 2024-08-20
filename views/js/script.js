@@ -145,20 +145,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function sendMessage(question, userTime) {
     try {
-        const data = {
+        /* const data = {
             query: question,
             apikey: 'ZheeRexx'
-        };
+        } */
 
-        const response = await axios.get('https://ai-rizzpiww.vercel.app/api/ai', data, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.status !== 200) {
-            throw new Error('Response was not ok');
-        }
+        const response = await axios.get(`https://ai-rizzpiww.vercel.app/api/ai?query=${question}&apikey=ZheeRexx`)
 
         let blackboxData = response.result;
         displayAnswer(blackboxData, userTime);
