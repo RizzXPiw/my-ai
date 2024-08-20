@@ -127,7 +127,7 @@ if (blackboxResponse.status !== 200) {
 throw new Error('Response was not ok');
 }
 
-let blackboxData = blackboxResponse.data.result;
+let blackboxData = blackboxResponse.data
 blackboxData = blackboxData.replace(/\$\@.*?\$\@|\*\*|\$/g, '');
 
 messageHistory.push({ role: "assistant", content: blackboxData });
