@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
             apikey: 'ZheeRexx'
         };
 
-        const response = await axios.post('https://ai-rizzpiww.vercel.app/api/ai', data, {
+        const response = await axios.get('https://ai-rizzpiww.vercel.app/api/ai', data, {
             headers: {
                 'Content-Type': 'application/json'
             }
